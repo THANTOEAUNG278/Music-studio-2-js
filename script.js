@@ -25,9 +25,10 @@ for (let i= 0; i < musicPlay.length; i++) {
   musicTag.appendChild(title)
   playListContainer.appendChild(musicTag)
 }
+let duration = 0;
 let durationText = '00:00';
 audioTag.addEventListener('loadeddata', () => {
-  const duration = Math.floor(audioTag.duration)
+  duration = Math.floor(audioTag.duration)
   durationText = createMinutesAndSeconds(duration);
 })
 audioTag.addEventListener('timeupdate', () => {
@@ -35,7 +36,12 @@ audioTag.addEventListener('timeupdate', () => {
  const currentTimeText = createMinutesAndSeconds(currentTime);
  const currentTimeTextAnddurationText = currentTimeText + " / " + durationText;
  currentAndTotleTimeTag.textContent = currentTimeTextAnddurationText;
+ updateCurrentProgress(currentTime)
 })
+const updateCurrentProgress = (currentTime) =>{
+  const currentProgressWidth = (500/duration) * currentTime
+  currentProgressTag.style.width = currentProgressWidth.toString() + "px"
+}
 
 const createMinutesAndSeconds = (totalSecond) => {
   const minutes = Math.floor(totalSecond/60);
