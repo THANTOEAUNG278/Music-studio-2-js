@@ -28,13 +28,13 @@ for (let i= 0; i < musicPlay.length; i++) {
 let durationText = '00:00';
 audioTag.addEventListener('loadeddata', () => {
   const duration = Math.floor(audioTag.duration)
-  durationText = createMinutesAndSeconds(duration)
+  durationText = createMinutesAndSeconds(duration);
 })
 audioTag.addEventListener('timeupdate', () => {
   const currentTime = Math.floor(audioTag.currentTime)
- const currentTimeText = createMinutesAndSeconds(currentTime)
- const currentTimeTextAnddurationText = currentTimeText + " / " + durationText
- currentAndTotleTimeTag.textContent = currentTimeTextAnddurationText
+ const currentTimeText = createMinutesAndSeconds(currentTime);
+ const currentTimeTextAnddurationText = currentTimeText + " / " + durationText;
+ currentAndTotleTimeTag.textContent = currentTimeTextAnddurationText;
 })
 
 const createMinutesAndSeconds = (totalSecond) => {
@@ -42,7 +42,7 @@ const createMinutesAndSeconds = (totalSecond) => {
   const seconds = totalSecond % 60;
 
 
-  const minuteText = minutes < 10 ? "0" + minutes.toString() :minutes
+  const minuteText = minutes < 10 ? "0" + minutes.toString() :minutes;
   const secondText = seconds < 10 ? "0" + seconds.toString() :seconds;
   return minuteText + ":" + secondText;
 }
