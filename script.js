@@ -6,6 +6,9 @@ const currentProgressTag = document.getElementById('currentProgress');
 
 const currentAndTotleTimeTag = document.getElementsByClassName('currentAndTotleTime')[0];
 
+const playButtonTag = document.getElementsByClassName('playButton')[0];
+
+const pauseButtonTag = document.getElementsByClassName('pauseButton')[0];
 
 const musicPlay = [
   {musicId: 'music/Akon-Beautiful.mp3', title: 'Beautiful - Akon' },
@@ -19,6 +22,8 @@ for (let i= 0; i < musicPlay.length; i++) {
     musicId = musicPlay[i].musicId
     audioTag.src = musicId
     audioTag.play()
+    isPlaying = true
+    updatePlayAndPause()
   })
   musicTag.classList.add('box')
   const title = document.createTextNode((i + 1).toString() + '.' + musicPlay[i].title);
@@ -38,11 +43,12 @@ audioTag.addEventListener('timeupdate', () => {
  currentAndTotleTimeTag.textContent = currentTimeTextAnddurationText;
  updateCurrentProgress(currentTime)
 })
+// progressBar create start
 const updateCurrentProgress = (currentTime) =>{
   const currentProgressWidth = (500/duration) * currentTime
   currentProgressTag.style.width = currentProgressWidth.toString() + "px"
 }
-
+// progressBar create end
 const createMinutesAndSeconds = (totalSecond) => {
   const minutes = Math.floor(totalSecond/60);
   const seconds = totalSecond % 60;
@@ -53,7 +59,38 @@ const createMinutesAndSeconds = (totalSecond) => {
   return minuteText + ":" + secondText;
 }
 
+let currentPlayingIndex = 0;
+let isPlaying = false;
+playButtonTag.addEventListener('click', () => {
+  const currentTime = Math.floor(audioTag.currentTime);
+  isPlaying = true;
+  if (currentTime === 0) {
+    const soungIdPlay = musicPlay[currentPlayingIndex].musicId;
+    audioTag.src = soungIdPlay
+    audioTag.play()
+    
+    updatePlayAndPause();
+  } else {
+    audioTag.play()
+    updatePlayAndPause()
+  }
+})
 
+pauseButtonTag.addEventListener('click', () => {
+  isPlaying = false
+  audioTag.pause()
+  updatePlayAndPause()
+})
+
+const updatePlayAndPause = () => {
+  if (isPlaying){
+    playButtonTag.style.display = 'none'
+    pauseButtonTag.style.display = 'inline'
+  }else {
+    playButtonTag.style.display = 'inline'
+    pauseButtonTag.style.display = 'none'
+  }
+}
 
 
 
