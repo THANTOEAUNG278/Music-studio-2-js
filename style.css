@@ -50,3 +50,6 @@ body{
 .pauseButton{
   display: none;
 }
+.activenow {
+  background-color:#fff ;
+}

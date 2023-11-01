@@ -10,21 +10,26 @@ const playButtonTag = document.getElementsByClassName('playButton')[0];
 
 const pauseButtonTag = document.getElementsByClassName('pauseButton')[0];
 
+const previousButtonTag = document.getElementsByClassName('previousButton')[0];
+
+const nextButtonTag = document.getElementsByClassName('nextButton')[0];
+
+
 const musicPlay = [
   {musicId: 'music/Akon-Beautiful.mp3', title: 'Beautiful - Akon' },
   {musicId: 'music/Right Now-Akon .mp3', title: 'Right Now - Akon' },
   {musicId: 'music/Toosii - Favorite Song .mp3', title: 'Favorite Song - Toosii ' },
   {musicId: 'music/程响 - Hurt Inside .mp3', title: 'Hurt Inside- 程响 ' },
 ]
+let currentPlayingIndex = 0;
 for (let i= 0; i < musicPlay.length; i++) {
   const musicTag = document.createElement('div');
   musicTag.addEventListener('click', () => {
-    musicId = musicPlay[i].musicId
-    audioTag.src = musicId
-    audioTag.play()
-    isPlaying = true
-    updatePlayAndPause()
+    currentPlayingIndex = i;
+    activeNow(musicTag,i)
+    playMusic()
   })
+
   musicTag.classList.add('box')
   const title = document.createTextNode((i + 1).toString() + '.' + musicPlay[i].title);
   musicTag.appendChild(title)
@@ -46,11 +51,11 @@ audioTag.addEventListener('timeupdate', () => {
 // progressBar create start
 const updateCurrentProgress = (currentTime) =>{
   const currentProgressWidth = (500/duration) * currentTime
-  currentProgressTag.style.width = currentProgressWidth.toString() + "px"
+  currentProgressTag.style.width = currentProgressWidth.toString() + "px" 
 }
 // progressBar create end
 const createMinutesAndSeconds = (totalSecond) => {
-  const minutes = Math.floor(totalSecond/60);
+  const minutes = Math.floor(totalSecond/60);  
   const seconds = totalSecond % 60;
 
 
@@ -59,17 +64,13 @@ const createMinutesAndSeconds = (totalSecond) => {
   return minuteText + ":" + secondText;
 }
 
-let currentPlayingIndex = 0;
+
 let isPlaying = false;
 playButtonTag.addEventListener('click', () => {
   const currentTime = Math.floor(audioTag.currentTime);
   isPlaying = true;
   if (currentTime === 0) {
-    const soungIdPlay = musicPlay[currentPlayingIndex].musicId;
-    audioTag.src = soungIdPlay
-    audioTag.play()
-    
-    updatePlayAndPause();
+    playMusic();
   } else {
     audioTag.play()
     updatePlayAndPause()
@@ -82,6 +83,29 @@ pauseButtonTag.addEventListener('click', () => {
   updatePlayAndPause()
 })
 
+previousButtonTag.addEventListener('click', () => {
+  if(currentPlayingIndex === 0){
+    return;
+  }
+  currentPlayingIndex -= 1;
+  playMusic()
+})
+
+nextButtonTag.addEventListener('click', () => {
+  if(currentPlayingIndex === musicPlay.length-1 ){
+    return;
+  }
+  currentPlayingIndex += 1;
+  playMusic()
+})
+
+const playMusic = () => {
+  const soungIdToPlay = musicPlay[currentPlayingIndex].musicId;
+  audioTag.src = soungIdToPlay
+  audioTag.play()
+  isPlaying = true;
+  updatePlayAndPause()
+}
 const updatePlayAndPause = () => {
   if (isPlaying){
     playButtonTag.style.display = 'none'
@@ -92,7 +116,21 @@ const updatePlayAndPause = () => {
   }
 }
 
+const activeNow = (musicTag,i) =>{
+  if (currentPlayingIndex===i){
+    musicTag.classList.add("activenow")
+  }
+}
+
 
 
 // const title = (i + 1).toString() + '.' + musicPlay[i].title;
 // musicTag.textContent = title
+
+// 10/2 =5
+ /*
+10/2 =5
+10/7 =1.4
+
+
+*/
