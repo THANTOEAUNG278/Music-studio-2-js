@@ -85,18 +85,21 @@ pauseButtonTag.addEventListener('click', () => {
 
 previousButtonTag.addEventListener('click', () => {
   if(currentPlayingIndex === 0){
-    return;
+    currentPlayingIndex = musicPlay.length-1
+  }else {
+    currentPlayingIndex -= 1;
   }
-  currentPlayingIndex -= 1;
   playMusic()
 })
 
 nextButtonTag.addEventListener('click', () => {
   if(currentPlayingIndex === musicPlay.length-1 ){
-    return;
+    currentPlayingIndex = 0;
+  }else {
+    currentPlayingIndex += 1;
   }
-  currentPlayingIndex += 1;
   playMusic()
+
 })
 
 const playMusic = () => {
@@ -105,6 +108,8 @@ const playMusic = () => {
   audioTag.play()
   isPlaying = true;
   updatePlayAndPause()
+  activeNow(currentPlayingIndex)
+
 }
 const updatePlayAndPause = () => {
   if (isPlaying){
@@ -116,12 +121,24 @@ const updatePlayAndPause = () => {
   }
 }
 
-const activeNow = (musicTag,i) =>{
-  if (currentPlayingIndex===i){
-    musicTag.classList.add("activenow")
-  }
+const activeNow = (i) =>{
+  const musicActive = document.getElementsByClassName('box');
+for (let j = 0; j< musicActive.length; j++){
+  musicActive[j].classList.remove('activenow')
+}
+const musicTag = musicActive[i]
+musicTag.classList.add('activenow')
 }
 
+
+// const activeNow = (i) =>{
+//   if (currentPlayingIndex === i){
+//     musicTag.classList.add('activenow')
+//   }else{
+//     musicTag.classList.remove('activenow')
+//   }
+
+// }
 
 
 // const title = (i + 1).toString() + '.' + musicPlay[i].title;
